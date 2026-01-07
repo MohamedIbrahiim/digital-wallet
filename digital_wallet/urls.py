@@ -17,7 +17,21 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from shared.auth.apis import LoginView
+from users.apis import RegisterView, ChangePasscodeView
+
+auth_urls = [
+    path("api/v1/auth/login/", LoginView.as_view(), name="login"),
+    path("api/v1/auth/register/", RegisterView.as_view(), name="auth-register"),
+    path(
+        "api/v1/auth/change-passcode/",
+        ChangePasscodeView.as_view(),
+        name="auth-change-passcode",
+    ),
+]
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]
+
+urlpatterns += auth_urls
