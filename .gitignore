@@ -1,0 +1,94 @@
+##############################
+# Python
+##############################
+__pycache__/
+*.py[cod]
+*$py.class
+
+##############################
+# Django
+##############################
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+
+##############################
+# Environment variables
+##############################
+.env
+.env.*
+!.env.example
+
+##############################
+# Virtual environments
+##############################
+venv/
+.venv/
+ENV/
+env/
+.python-version
+
+##############################
+# PyCharm
+##############################
+.idea/
+*.iml
+
+##############################
+# VS Code
+##############################
+.vscode/
+.history/
+
+##############################
+# OS files
+##############################
+.DS_Store
+Thumbs.db
+
+##############################
+# Test / Coverage
+##############################
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+nosetests.xml
+coverage.xml
+
+##############################
+# Mypy / Ruff / Black
+##############################
+.mypy_cache/
+.ruff_cache/
+.black_cache/
+
+##############################
+# Celery / Beat
+##############################
+celerybeat-schedule
+celerybeat.pid
+
+##############################
+# Logs
+##############################
+logs/
+*.log
+
+##############################
+# Docker
+##############################
+*.pid
+docker-compose.override.yml
+
+##############################
+# Build / Distribution
+##############################
+build/
+dist/
+*.egg-info/
