@@ -3,6 +3,7 @@ from rest_framework.test import APIRequestFactory
 
 from shared.auth.serializers import LoginSerializer
 from shared.tests.factories import create_user
+from users.models import UserAccessToken
 
 
 class LoginSerializerTests(TestCase):
@@ -26,3 +27,4 @@ class LoginSerializerTests(TestCase):
         self.assertTrue(serializer.is_valid(), serializer.errors)
         self.assertIn("access", serializer.validated_data)
         self.assertNotIn("refresh", serializer.validated_data)
+        self.assertTrue(UserAccessToken.objects.filter(user=self.user).exists())

@@ -15,8 +15,8 @@ Request body (JSON):
   "mobile_number": "+201234567890",
   "first_name": "Mona",
   "last_name": "Ibrahim",
-  "passcode": "123456",
-  "passcode_confirm": "123456"
+  "passcode": "907284",
+  "passcode_confirm": "907284"
 }
 ```
 
@@ -34,7 +34,7 @@ Request body (JSON):
 ```json
 {
   "mobile_number": "+201234567890",
-  "password": "123456"
+  "password": "907284"
 }
 ```
 
@@ -51,9 +51,9 @@ Request body (JSON):
 
 ```json
 {
-  "old_passcode": "123456",
-  "new_passcode": "654321",
-  "new_passcode_confirm": "654321"
+  "old_passcode": "907284",
+  "new_passcode": "715940",
+  "new_passcode_confirm": "715940"
 }
 ```
 

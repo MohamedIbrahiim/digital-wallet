@@ -11,8 +11,8 @@ class RegisterSerializerTests(TestCase):
             "mobile_number": "+201234567890",
             "first_name": "Mona",
             "last_name": "Ibrahim",
-            "passcode": "123456",
-            "passcode_confirm": "123456",
+            "passcode": "907284",
+            "passcode_confirm": "907284",
         }
 
         serializer = RegisterSerializer(data=data)
@@ -28,8 +28,8 @@ class RegisterSerializerTests(TestCase):
             "mobile_number": "+201234567890",
             "first_name": "Mona",
             "last_name": "Ibrahim",
-            "passcode": "123456",
-            "passcode_confirm": "654321",
+            "passcode": "907284",
+            "passcode_confirm": "907285",
         }
 
         serializer = RegisterSerializer(data=data)
@@ -50,8 +50,8 @@ class ChangePasscodeSerializerTests(TestCase):
     def test_change_passcode_updates_password_and_token_version(self):
         data = {
             "old_passcode": "123456",
-            "new_passcode": "654321",
-            "new_passcode_confirm": "654321",
+            "new_passcode": "907284",
+            "new_passcode_confirm": "907284",
         }
 
         serializer = ChangePasscodeSerializer(
@@ -61,14 +61,14 @@ class ChangePasscodeSerializerTests(TestCase):
         serializer.save()
 
         self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password("654321"))
+        self.assertTrue(self.user.check_password("907284"))
         self.assertEqual(self.user.token_version, 2)
 
     def test_change_passcode_rejects_incorrect_old_passcode(self):
         data = {
             "old_passcode": "000000",
-            "new_passcode": "654321",
-            "new_passcode_confirm": "654321",
+            "new_passcode": "907284",
+            "new_passcode_confirm": "907284",
         }
 
         serializer = ChangePasscodeSerializer(
@@ -80,8 +80,8 @@ class ChangePasscodeSerializerTests(TestCase):
     def test_change_passcode_rejects_mismatched_new_passcode(self):
         data = {
             "old_passcode": "123456",
-            "new_passcode": "654321",
-            "new_passcode_confirm": "123456",
+            "new_passcode": "907284",
+            "new_passcode_confirm": "907285",
         }
 
         serializer = ChangePasscodeSerializer(

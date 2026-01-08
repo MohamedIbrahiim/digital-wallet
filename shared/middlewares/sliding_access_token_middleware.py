@@ -1,11 +1,15 @@
 import logging
 import time
+from datetime import timedelta
 from typing import Optional, Tuple
 
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from django.conf import settings
+from django.utils import timezone
 from rest_framework_simplejwt.tokens import AccessToken
 
 from shared.auth.authentication import VersionedJWTAuthentication
+from users.models import UserAccessToken
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +62,13 @@ class SlidingAccessTokenMiddleware:
             new_token["tv"] = request.user.token_version
             response["X-Access-Token"] = str(new_token)
             response["Access-Control-Expose-Headers"] = "X-Access-Token"
+            idle_seconds = getattr(settings, "ACCESS_TOKEN_IDLE_TIMEOUT_SECONDS", 120)
+            expires_at = timezone.now() + timedelta(seconds=idle_seconds)
+            UserAccessToken.touch(
+                user=request.user,
+                jti=str(new_token["jti"]),
+                expires_at=expires_at,
+            )
             logger.info(
                 "rolling_token_issued user_id=%s remaining_seconds=%s",
                 request.user.pk,

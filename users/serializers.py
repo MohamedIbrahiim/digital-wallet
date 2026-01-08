@@ -57,7 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ChangePasscodeSerializer(serializers.Serializer):
-    old_passcode = PasscodeField()
+    old_passcode = PasscodeField(enforce_strength=False)
     new_passcode = PasscodeField()
     new_passcode_confirm = PasscodeField()
 

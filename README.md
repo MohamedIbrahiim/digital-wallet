@@ -63,7 +63,7 @@ Schema: `http://127.0.0.1:8000/api/schema/`
 ```bash
 curl -X POST http://127.0.0.1:8000/api/v1/auth/register/ \
   -H "Content-Type: application/json" \
-  -d '{"mobile_number":"+201234567890","first_name":"Mona","last_name":"Ibrahim","passcode":"123456","passcode_confirm":"123456"}'
+  -d '{"mobile_number":"+201234567890","first_name":"Mona","last_name":"Ibrahim","passcode":"907284","passcode_confirm":"907284"}'
 ```
 
 ### Login
@@ -71,7 +71,7 @@ curl -X POST http://127.0.0.1:8000/api/v1/auth/register/ \
 ```bash
 curl -X POST http://127.0.0.1:8000/api/v1/auth/login/ \
   -H "Content-Type: application/json" \
-  -d '{"mobile_number":"+201234567890","password":"123456"}'
+  -d '{"mobile_number":"+201234567890","password":"907284"}'
 ```
 
 ### Create wallet
@@ -132,6 +132,7 @@ curl -X GET "http://127.0.0.1:8000/api/v1/transactions/?wallet_tag=@wlt_x7k9f.1"
 - **Atomic money movement**: All balance changes go through `MoneyFlowService` with DB transactions + row locking.
 - **Short-lived JWTs**: Access tokens expire quickly and are invalidated on passcode change via `token_version`.
 - **Rolling access tokens**: Near-expiry tokens are rotated and returned in `X-Access-Token`.
+- **Stored access tokens**: Access tokens are tracked in the database and expire after inactivity (`ACCESS_TOKEN_IDLE_TIMEOUT_SECONDS`).
 - **Case-insensitive wallet names**: Uniqueness is enforced with a lower-cased unique constraint.
 - **Configurable limits**: Per‑transaction and daily limits are configured via `WALLET_LIMITS`.
 - **SQLite by default**: Postgres is used when `DB_HOST` is provided.

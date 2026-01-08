@@ -251,3 +251,21 @@ msgstr "External"
 
 msgid "Unknown"
 msgstr "Unknown"
+
+msgid "Passcode cannot be sequential."
+msgstr "Passcode cannot be sequential."
+
+msgid "Passcode cannot contain repetitive patterns."
+msgstr "Passcode cannot contain repetitive patterns."
+
+msgid "Invalid token (missing identifier)."
+msgstr "Invalid token (missing identifier)."
+
+msgid "Session expired. Please log in again."
+msgstr "Session expired. Please log in again."
+
+msgid "Access token"
+msgstr "Access token"
+
+msgid "Access tokens"
+msgstr "Access tokens"

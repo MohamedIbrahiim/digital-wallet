@@ -60,3 +60,37 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return str(self.mobile_number)
+
+
+class UserAccessToken(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="access_tokens"
+    )
+    jti = models.CharField(max_length=255, unique=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_seen_at = models.DateTimeField()
+    expires_at = models.DateTimeField()
+
+    class Meta:
+        verbose_name = _("Access token")
+        verbose_name_plural = _("Access tokens")
+        indexes = [
+            models.Index(fields=["user", "expires_at"]),
+            models.Index(fields=["expires_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user_id}:{self.jti}"
+
+    @classmethod
+    def touch(cls, *, user, jti: str, expires_at) -> "UserAccessToken":
+        now = timezone.now()
+        token, _ = cls.objects.update_or_create(
+            jti=jti,
+            defaults={
+                "user": user,
+                "last_seen_at": now,
+                "expires_at": expires_at,
+            },
+        )
+        return token

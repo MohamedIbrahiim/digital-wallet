@@ -8,7 +8,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 
 from shared.middlewares import SlidingAccessTokenMiddleware
-from shared.tests.factories import create_user
+from shared.tests.factories import create_user, create_access_token_record
 
 
 def _get_response(_request):
@@ -23,6 +23,7 @@ class SlidingAccessTokenMiddlewareTests(TestCase):
         token = AccessToken.for_user(self.user)
         token["tv"] = self.user.token_version
         token["exp"] = int(time.time()) + 10
+        create_access_token_record(user=self.user, jti=str(token["jti"]))
 
         request = self.client.request().wsgi_request
         request.META["HTTP_AUTHORIZATION"] = f"Bearer {str(token)}"

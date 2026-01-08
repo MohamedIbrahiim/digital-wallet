@@ -251,3 +251,21 @@ msgstr "خارجي"
 
 msgid "Unknown"
 msgstr "غير معروف"
+
+msgid "Passcode cannot be sequential."
+msgstr "لا يمكن أن يكون رمز المرور متسلسلاً."
+
+msgid "Passcode cannot contain repetitive patterns."
+msgstr "لا يمكن أن يحتوي رمز المرور على أنماط متكررة."
+
+msgid "Invalid token (missing identifier)."
+msgstr "رمز غير صالح (المعرّف مفقود)."
+
+msgid "Session expired. Please log in again."
+msgstr "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى."
+
+msgid "Access token"
+msgstr "رمز الوصول"
+
+msgid "Access tokens"
+msgstr "رموز الوصول"

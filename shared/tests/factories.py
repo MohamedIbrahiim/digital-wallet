@@ -1,8 +1,12 @@
 from itertools import count
 
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from wallets.models import Wallet
+from users.models import UserAccessToken
 
 User = get_user_model()
 
@@ -40,3 +44,8 @@ def create_wallet(user=None, **kwargs):
     }
     defaults.update(kwargs)
     return Wallet.objects.create(**defaults)
+
+
+def create_access_token_record(*, user, jti: str, expires_in_seconds: int = 120):
+    expires_at = timezone.now() + timedelta(seconds=expires_in_seconds)
+    return UserAccessToken.touch(user=user, jti=jti, expires_at=expires_at)
