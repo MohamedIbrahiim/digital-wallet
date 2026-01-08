@@ -8,6 +8,7 @@ from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
 from wallets.choices import WalletType, WalletStatus
+from wallets.utils import generate_wallet_reference_tag
 
 
 class Wallet(models.Model):
@@ -31,6 +32,16 @@ class Wallet(models.Model):
         max_length=100,
         verbose_name=_("Wallet name"),
         help_text=_("Unique wallet name per user (e.g., My Savings, Travel Fund)."),
+    )
+
+    reference_tag = models.CharField(
+        max_length=40,
+        unique=True,
+        db_index=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Wallet reference tag"),
+        help_text=_("Public wallet reference tag for transfers (e.g., @wlt_x7k9f.42)."),
     )
 
     balance = models.DecimalField(
@@ -72,6 +83,10 @@ class Wallet(models.Model):
                 condition=Q(balance__gte=0),
                 name="wallet_balance_non_negative",
             ),
+            models.CheckConstraint(
+                condition=Q(held_balance__gte=0),
+                name="wallet_held_balance_non_negative",
+            ),
         ]
         indexes = [
             models.Index(fields=["user", "wallet_type"]),
@@ -80,3 +95,14 @@ class Wallet(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user.id}:{self.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.reference_tag:
+            super().save(*args, **kwargs)
+            reference_tag = generate_wallet_reference_tag(self.pk)
+            while Wallet.objects.filter(reference_tag=reference_tag).exists():
+                reference_tag = generate_wallet_reference_tag(self.pk)
+            Wallet.objects.filter(pk=self.pk).update(reference_tag=reference_tag)
+            self.reference_tag = reference_tag
+            return
+        super().save(*args, **kwargs)

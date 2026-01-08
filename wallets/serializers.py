@@ -19,10 +19,18 @@ class WalletSerializer(serializers.ModelSerializer):
             "wallet_type",
             "balance",
             "status",
+            "reference_tag",
             "created_at",
             "updated_at",
         )
-        read_only_fields = ("id", "balance", "status", "created_at", "updated_at")
+        read_only_fields = (
+            "id",
+            "balance",
+            "status",
+            "reference_tag",
+            "created_at",
+            "updated_at",
+        )
 
     def validate(self, attrs):
         """

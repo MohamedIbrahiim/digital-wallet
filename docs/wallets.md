@@ -21,6 +21,7 @@ Sample response (JSON):
     "wallet_type": "current",
     "balance": "1500.00",
     "status": "active",
+    "reference_tag": "@wlt_x7k9f.1",
     "created_at": "2026-01-07T10:30:00Z",
     "updated_at": "2026-01-07T10:30:00Z"
   }
@@ -30,7 +31,7 @@ Sample response (JSON):
 ## Retrieve wallet
 
 - Method: `GET`
-- Path: `/api/v1/wallets/{id}/`
+- Path: `/api/v1/wallets/{reference_tag}/`
 - Auth: `Bearer <access>`
 
 Response:
@@ -45,6 +46,7 @@ Sample response (JSON):
   "wallet_type": "current",
   "balance": "1500.00",
   "status": "active",
+  "reference_tag": "@wlt_x7k9f.1",
   "created_at": "2026-01-07T10:30:00Z",
   "updated_at": "2026-01-07T10:30:00Z"
 }
@@ -73,3 +75,4 @@ Response:
 - `wallet_type` choices: `current`, `savings`, `travel`, `business`, `other`.
 - Wallet names are unique per user (case-insensitive validation at API layer).
 - Access is restricted to the wallet owner.
+- Use `reference_tag` in transfer APIs (see `docs/transactions.md`).
