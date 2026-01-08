@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en\n"
+
+msgid "English"
+msgstr "English"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+msgid "Mobile number"
+msgstr "Mobile number"
+
+msgid "Passcodes do not match."
+msgstr "Passcodes do not match."
+
+msgid "Old passcode is incorrect."
+msgstr "Old passcode is incorrect."
+
+msgid "Passcode must be exactly 6 digits."
+msgstr "Passcode must be exactly 6 digits."
+
+msgid "Passcode changed successfully."
+msgstr "Passcode changed successfully."
+
+msgid "Invalid token (missing version)."
+msgstr "Invalid token (missing version)."
+
+msgid "Token is no longer valid. Please log in again."
+msgstr "Token is no longer valid. Please log in again."
+
+msgid "Current"
+msgstr "Current"
+
+msgid "Savings"
+msgstr "Savings"
+
+msgid "Travel"
+msgstr "Travel"
+
+msgid "Business"
+msgstr "Business"
+
+msgid "Other"
+msgstr "Other"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Suspended"
+msgstr "Suspended"
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Wallet type"
+msgstr "Wallet type"
+
+msgid "Wallet name"
+msgstr "Wallet name"
+
+msgid "Unique wallet name per user (e.g., My Savings, Travel Fund)."
+msgstr "Unique wallet name per user (e.g., My Savings, Travel Fund)."
+
+msgid "Balance"
+msgstr "Balance"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Wallet"
+msgstr "Wallet"
+
+msgid "Wallets"
+msgstr "Wallets"
+
+msgid "You do not have permission to access this wallet."
+msgstr "You do not have permission to access this wallet."
+
+msgid "You already have a wallet with this name."
+msgstr "You already have a wallet with this name."

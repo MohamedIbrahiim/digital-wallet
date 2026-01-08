@@ -1,18 +1,14 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import AccessToken
 
 from shared.auth.authentication import VersionedJWTAuthentication
-
-User = get_user_model()
+from shared.tests.factories import create_user
 
 
 class VersionedJWTAuthenticationTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            mobile_number="+201234567804", password="123456"
-        )
+        self.user = create_user()
         self.auth = VersionedJWTAuthentication()
 
     def test_get_user_accepts_matching_token_version(self):

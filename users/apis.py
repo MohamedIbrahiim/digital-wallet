@@ -3,6 +3,7 @@ import logging
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, ChangePasscodeSerializer
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
@@ -33,5 +34,6 @@ class ChangePasscodeView(generics.GenericAPIView):
             user.token_version,
         )
         return Response(
-            {"detail": "Passcode changed successfully."}, status=status.HTTP_200_OK
+            {"detail": _("Passcode changed successfully.")},
+            status=status.HTTP_200_OK,
         )

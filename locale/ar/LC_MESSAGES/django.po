@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: ar\n"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Arabic"
+msgstr "العربية"
+
+msgid "Mobile number"
+msgstr "رقم الهاتف المحمول"
+
+msgid "Passcodes do not match."
+msgstr "رموز المرور غير متطابقة."
+
+msgid "Old passcode is incorrect."
+msgstr "رمز المرور القديم غير صحيح."
+
+msgid "Passcode must be exactly 6 digits."
+msgstr "يجب أن يتكون رمز المرور من 6 أرقام بالضبط."
+
+msgid "Passcode changed successfully."
+msgstr "تم تغيير رمز المرور بنجاح."
+
+msgid "Invalid token (missing version)."
+msgstr "رمز غير صالح (الإصدار مفقود)."
+
+msgid "Token is no longer valid. Please log in again."
+msgstr "انتهت صلاحية الرمز. يرجى تسجيل الدخول مرة أخرى."
+
+msgid "Current"
+msgstr "جاري"
+
+msgid "Savings"
+msgstr "ادخار"
+
+msgid "Travel"
+msgstr "سفر"
+
+msgid "Business"
+msgstr "أعمال"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Suspended"
+msgstr "معلق"
+
+msgid "Closed"
+msgstr "مغلق"
+
+msgid "Wallet type"
+msgstr "نوع المحفظة"
+
+msgid "Wallet name"
+msgstr "اسم المحفظة"
+
+msgid "Unique wallet name per user (e.g., My Savings, Travel Fund)."
+msgstr "اسم فريد للمحفظة لكل مستخدم (مثل: مدخراتي، صندوق السفر)."
+
+msgid "Balance"
+msgstr "الرصيد"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Wallet"
+msgstr "محفظة"
+
+msgid "Wallets"
+msgstr "محافظ"
+
+msgid "You do not have permission to access this wallet."
+msgstr "ليس لديك صلاحية للوصول إلى هذه المحفظة."
+
+msgid "You already have a wallet with this name."
+msgstr "لديك محفظة بهذا الاسم بالفعل."

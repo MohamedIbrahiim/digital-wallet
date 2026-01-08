@@ -5,6 +5,7 @@ from django.db import transaction
 from rest_framework import serializers
 from phonenumber_field.serializerfields import PhoneNumberField
 from shared.regex import PasscodeField
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         if passcode != confirm:
             raise serializers.ValidationError(
-                {"passcode_confirm": "Passcodes do not match."}
+                {"passcode_confirm": _("Passcodes do not match.")}
             )
 
         return attrs
@@ -58,7 +59,7 @@ class ChangePasscodeSerializer(serializers.Serializer):
 
         if new_passcode != confirm:
             raise serializers.ValidationError(
-                {"new_passcode_confirm": "Passcodes do not match."}
+                {"new_passcode_confirm": _("Passcodes do not match.")}
             )
 
         return attrs
@@ -66,7 +67,7 @@ class ChangePasscodeSerializer(serializers.Serializer):
     def validate_old_passcode(self, value):
         user = self.context["request"].user
         if not user.check_password(value):
-            raise serializers.ValidationError("Old passcode is incorrect.")
+            raise serializers.ValidationError(_("Old passcode is incorrect."))
         return value
 
     def save(self, **kwargs):

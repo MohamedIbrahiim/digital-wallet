@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Use the venv's Python
-PYTHON_BIN="$PROJECT_ROOT/venv/bin/python"
+PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python"
 
 # Check if venv Python exists
 if [ ! -f "$PYTHON_BIN" ]; then
