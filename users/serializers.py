@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from phonenumber_field.serializerfields import PhoneNumberField
 from shared.regex import PasscodeField
 from django.utils.translation import gettext_lazy as _
@@ -12,7 +13,14 @@ logger = logging.getLogger(__name__)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    mobile_number = PhoneNumberField()
+    mobile_number = PhoneNumberField(
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message=_("An account with this mobile number already exists."),
+            )
+        ]
+    )
     passcode = PasscodeField()
     passcode_confirm = PasscodeField()
 

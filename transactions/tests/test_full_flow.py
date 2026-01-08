@@ -63,7 +63,7 @@ class TransactionFullFlowTests(TestCase):
             "to_reference_tag": to_wallet.reference_tag,
             "amount": str(amount),
         }
-        request = self.factory.post("/wallets/transfer/", payload, format="json")
+        request = self.factory.post("/transactions/transfer/", payload, format="json")
         force_authenticate(request, user=user)
         response = InternalTransferView.as_view()(request)
         self.assertEqual(response.status_code, 201)
@@ -85,7 +85,7 @@ class TransactionFullFlowTests(TestCase):
             "to_reference_tag": to_wallet.reference_tag,
             "amount": str(amount),
         }
-        request = self.factory.post("/wallets/send/", payload, format="json")
+        request = self.factory.post("/transactions/send/", payload, format="json")
         force_authenticate(request, user=user)
         response = P2PSendHoldView.as_view()(request)
         self.assertEqual(response.status_code, 201)

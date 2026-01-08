@@ -1,3 +1,4 @@
+import logging
 import ulid
 from decimal import Decimal
 from django.conf import settings
@@ -5,6 +6,8 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
+
+logger = logging.getLogger(__name__)
 
 
 def _get_limits_for(tx_type: str) -> dict:
@@ -42,6 +45,12 @@ def enforce_per_transaction_limit(*, tx_type: str, amount: Decimal) -> None:
     max_per_tx = limits.get("MAX_PER_TRANSACTION")
 
     if max_per_tx is not None and amount > max_per_tx:
+        logger.warning(
+            "per_tx_limit_exceeded tx_type=%s amount=%s limit=%s",
+            tx_type,
+            amount,
+            max_per_tx,
+        )
         raise ValidationError({"amount": _("Amount exceeds per-transaction limit.")})
 
 
@@ -76,6 +85,14 @@ def enforce_daily_outgoing_limit(
     ).aggregate(total=Sum("amount")).get("total") or Decimal("0.00")
 
     if total_today + amount > daily_limit:
+        logger.warning(
+            "daily_limit_exceeded wallet_id=%s tx_type=%s amount=%s total_today=%s limit=%s",
+            wallet_id,
+            tx_type,
+            amount,
+            total_today,
+            daily_limit,
+        )
         raise ValidationError({"amount": _("Daily wallet limit exceeded.")})
 
 

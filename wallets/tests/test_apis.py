@@ -23,6 +23,16 @@ class WalletViewSetTests(TestCase):
         queryset = view.get_queryset()
         self.assertEqual(queryset.count(), 1)
 
+    def test_get_queryset_swagger_fake_view(self):
+        request = self.factory.get("/wallets/")
+        request.user = self.user
+        view = WalletViewSet()
+        view.request = request
+        view.swagger_fake_view = True
+
+        queryset = view.get_queryset()
+        self.assertEqual(queryset.count(), 0)
+
     def test_get_serializer_class_for_create(self):
         view = WalletViewSet()
         view.action = "create"

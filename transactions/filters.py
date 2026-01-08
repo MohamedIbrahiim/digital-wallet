@@ -1,6 +1,8 @@
 from django.db.models import Q
 from django_filters import rest_framework as filters
 from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 from transactions.choices import TransactionDirectionChoices, TransactionType
 from transactions.models import Transaction
 from wallets.models import Wallet
@@ -17,7 +19,8 @@ class TransactionFilter(filters.FilterSet):
     )
     wallet_tag = filters.CharFilter(method="filter_wallet_tag")
 
-    def filter_direction(self, queryset, _name, value):
+    @extend_schema_field(OpenApiTypes.STR)
+    def filter_direction(self, queryset, _name, value: str):
         request = getattr(self, "request", None)
         user = getattr(request, "user", None)
         if not user or not user.is_authenticated:

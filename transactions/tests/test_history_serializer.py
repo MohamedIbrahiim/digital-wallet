@@ -35,6 +35,21 @@ class TransactionHistorySerializerTests(TestCase):
 
         self.assertEqual(serializer.data["direction"], "deposit")
         self.assertEqual(serializer.data["source"], "bank")
+        self.assertEqual(serializer.data["direction_label"], "Deposit")
+
+    def test_source_deposit_defaults_to_external(self):
+        tx = Transaction.objects.create(
+            tx_type=TransactionType.DEPOSIT,
+            status=TransactionStatus.COMPLETED,
+            amount=Decimal("5.00"),
+            from_wallet=None,
+            to_wallet=self.wallet,
+            external_source="",
+        )
+
+        serializer = TransactionHistorySerializer(instance=tx, context={})
+
+        self.assertEqual(serializer.data["source"], "External")
 
     def test_direction_and_source_for_internal(self):
         tx = Transaction.objects.create(
@@ -52,7 +67,20 @@ class TransactionHistorySerializerTests(TestCase):
         )
 
         self.assertEqual(serializer.data["direction"], "internal")
-        self.assertIn("wallet:", serializer.data["source"])
+        self.assertIn("Transfer from", serializer.data["source"])
+        self.assertEqual(serializer.data["direction_label"], "Internal")
+
+    def test_direction_label_for_unknown(self):
+        tx = Transaction.objects.create(
+            tx_type=TransactionType.P2P,
+            status=TransactionStatus.COMPLETED,
+            amount=Decimal("5.00"),
+            from_wallet=self.wallet,
+            to_wallet=self.other_wallet,
+        )
+
+        serializer = TransactionHistorySerializer(instance=tx, context={})
+        self.assertEqual(serializer.data["direction_label"], "Unknown")
 
     def test_direction_outgoing_and_incoming(self):
         outgoing_tx = Transaction.objects.create(
@@ -82,6 +110,8 @@ class TransactionHistorySerializerTests(TestCase):
 
         self.assertEqual(outgoing.data["direction"], "outgoing")
         self.assertEqual(incoming.data["direction"], "incoming")
+        self.assertEqual(outgoing.data["direction_label"], "Outgoing")
+        self.assertEqual(incoming.data["direction_label"], "Incoming")
 
     def test_direction_unknown_without_user(self):
         tx = Transaction.objects.create(
@@ -94,6 +124,7 @@ class TransactionHistorySerializerTests(TestCase):
 
         serializer = TransactionHistorySerializer(instance=tx, context={})
         self.assertEqual(serializer.data["direction"], "unknown")
+        self.assertEqual(serializer.data["direction_label"], "Unknown")
 
     def test_source_from_wallet_only(self):
         tx = Transaction(
@@ -105,7 +136,7 @@ class TransactionHistorySerializerTests(TestCase):
         )
 
         serializer = TransactionHistorySerializer(instance=tx, context={})
-        self.assertTrue(serializer.data["source"].startswith("wallet:"))
+        self.assertTrue(serializer.data["source"].startswith("From "))
 
     def test_source_unknown(self):
         tx = Transaction(
@@ -117,4 +148,4 @@ class TransactionHistorySerializerTests(TestCase):
         )
 
         serializer = TransactionHistorySerializer(instance=tx, context={})
-        self.assertEqual(serializer.data["source"], "unknown")
+        self.assertEqual(serializer.data["source"], "Unknown")

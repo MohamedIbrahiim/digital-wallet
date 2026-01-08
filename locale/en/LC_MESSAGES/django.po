@@ -221,3 +221,33 @@ msgstr "Insufficient funds."
 
 msgid "You do not have permission to use this wallet."
 msgstr "You do not have permission to use this wallet."
+
+msgid "An account with this mobile number already exists."
+msgstr "An account with this mobile number already exists."
+
+msgid "A wallet reference tag conflict occurred. Please retry."
+msgstr "A wallet reference tag conflict occurred. Please retry."
+
+msgid "Wallet balance cannot be negative."
+msgstr "Wallet balance cannot be negative."
+
+msgid "Request violates a data constraint. Please review your input."
+msgstr "Request violates a data constraint. Please review your input."
+
+msgid "Amount exceeds per-transaction limit."
+msgstr "Amount exceeds per-transaction limit."
+
+msgid "Daily wallet limit exceeded."
+msgstr "Daily wallet limit exceeded."
+
+msgid "Transfer from {from_name} ({from_tag}) to {to_name} ({to_tag})"
+msgstr "Transfer from {from_name} ({from_tag}) to {to_name} ({to_tag})"
+
+msgid "From {from_name} ({from_tag})"
+msgstr "From {from_name} ({from_tag})"
+
+msgid "External"
+msgstr "External"
+
+msgid "Unknown"
+msgstr "Unknown"

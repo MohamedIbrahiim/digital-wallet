@@ -2,6 +2,7 @@ import logging
 
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 
 from wallets.models import Wallet
 from .permissions import IsWalletOwner
@@ -22,6 +23,8 @@ class WalletViewSet(
     lookup_url_kwarg = "reference_tag"
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Wallet.objects.none()
         queryset = Wallet.objects.filter(user=self.request.user).order_by("-created_at")
         logger.info("wallet_list_requested user_id=%s", self.request.user.pk)
         return queryset
@@ -35,6 +38,16 @@ class WalletViewSet(
             wallet.name,
         )
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="reference_tag",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.PATH,
+                description="Wallet reference tag (e.g., @wlt_x7k9f.1).",
+            )
+        ]
+    )
     def retrieve(self, request, *args, **kwargs):
         logger.info(
             "wallet_retrieve_requested user_id=%s reference_tag=%s",

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from decimal import Decimal
+import logging
 from typing import Optional
 
 from django.db import transaction
@@ -13,6 +14,8 @@ from transactions.utils import (
 )
 from transactions.models import Transaction, TransactionStatus, TransactionType
 from wallets.models import Wallet, WalletStatus
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -78,6 +81,12 @@ class MoneyFlowService:
         external_source: str = "",
         metadata: Optional[dict] = None,
     ) -> Transaction:
+        logger.info(
+            "deposit_service_start user_id=%s wallet_id=%s amount=%s",
+            getattr(user, "pk", None),
+            wallet_id,
+            amount,
+        )
         _validate_amount(amount)
 
         # Limits: per-tx (no daily outgoing limit for deposits)
@@ -106,6 +115,12 @@ class MoneyFlowService:
             is_hold=False,
             resolved_at=timezone.now(),
         )
+        logger.info(
+            "deposit_service_success user_id=%s wallet_id=%s tx_id=%s",
+            getattr(user, "pk", None),
+            wallet_id,
+            tx.pk,
+        )
         return tx
 
     @staticmethod
@@ -118,6 +133,13 @@ class MoneyFlowService:
         amount: Decimal,
         metadata: Optional[dict] = None,
     ) -> Transaction:
+        logger.info(
+            "internal_transfer_service_start user_id=%s from_reference_tag=%s to_reference_tag=%s amount=%s",
+            getattr(user, "pk", None),
+            from_reference_tag,
+            to_reference_tag,
+            amount,
+        )
         _validate_amount(amount)
 
         if from_reference_tag == to_reference_tag:
@@ -161,6 +183,11 @@ class MoneyFlowService:
             is_hold=False,
             resolved_at=timezone.now(),
         )
+        logger.info(
+            "internal_transfer_service_success user_id=%s tx_id=%s",
+            getattr(user, "pk", None),
+            tx.pk,
+        )
         return tx
 
     @staticmethod
@@ -173,6 +200,13 @@ class MoneyFlowService:
         amount: Decimal,
         metadata: Optional[dict] = None,
     ) -> Transaction:
+        logger.info(
+            "p2p_send_service_start user_id=%s from_reference_tag=%s to_reference_tag=%s amount=%s",
+            getattr(user, "pk", None),
+            from_reference_tag,
+            to_reference_tag,
+            amount,
+        )
         """
         P2P send that creates a PENDING transaction and holds funds on sender:
         - sender.balance decreases
@@ -221,6 +255,11 @@ class MoneyFlowService:
             is_hold=True,
             held_at=timezone.now(),
         )
+        logger.info(
+            "p2p_send_service_success user_id=%s tx_id=%s",
+            getattr(user, "pk", None),
+            tx.pk,
+        )
         return tx
 
     @staticmethod
@@ -249,6 +288,11 @@ class MoneyFlowService:
         tx.resolved_at = timezone.now()
         tx.save(update_fields=["status", "is_hold", "resolved_at", "updated_at"])
 
+        logger.info(
+            "p2p_accept_service_success user_id=%s tx_id=%s",
+            getattr(user, "pk", None),
+            tx.pk,
+        )
         return tx
 
     @staticmethod
@@ -273,19 +317,24 @@ class MoneyFlowService:
         tx.resolved_at = timezone.now()
         tx.save(update_fields=["status", "is_hold", "resolved_at", "updated_at"])
 
+        logger.info(
+            "p2p_reject_service_success user_id=%s tx_id=%s",
+            getattr(user, "pk", None),
+            tx.pk,
+        )
         return tx
 
     @staticmethod
     def _lock_and_validate_p2p(
         *, user, tx_id: str, action: str
     ) -> tuple[Transaction, Wallet, Wallet]:
-        tx = (
-            Transaction.objects.select_for_update()
-            .select_related(
-                "from_wallet", "to_wallet", "to_wallet__user", "from_wallet__user"
-            )
-            .get(id=tx_id)
+        logger.info(
+            "p2p_action_validate_start user_id=%s tx_id=%s action=%s",
+            getattr(user, "pk", None),
+            tx_id,
+            action,
         )
+        tx = Transaction.objects.select_for_update().get(id=tx_id)
 
         if tx.tx_type != TransactionType.P2P:
             raise ValidationError(

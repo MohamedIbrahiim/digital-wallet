@@ -221,3 +221,33 @@ msgstr "رصيد غير كافٍ."
 
 msgid "You do not have permission to use this wallet."
 msgstr "ليس لديك صلاحية لاستخدام هذه المحفظة."
+
+msgid "An account with this mobile number already exists."
+msgstr "يوجد حساب بهذا الرقم بالفعل."
+
+msgid "A wallet reference tag conflict occurred. Please retry."
+msgstr "حدث تعارض في معرف المحفظة. يرجى المحاولة مرة أخرى."
+
+msgid "Wallet balance cannot be negative."
+msgstr "لا يمكن أن يكون رصيد المحفظة سالباً."
+
+msgid "Request violates a data constraint. Please review your input."
+msgstr "الطلب يخالف قيود البيانات. يرجى مراجعة البيانات المدخلة."
+
+msgid "Amount exceeds per-transaction limit."
+msgstr "المبلغ يتجاوز الحد الأقصى لكل معاملة."
+
+msgid "Daily wallet limit exceeded."
+msgstr "تم تجاوز الحد اليومي للمحفظة."
+
+msgid "Transfer from {from_name} ({from_tag}) to {to_name} ({to_tag})"
+msgstr "تحويل من {from_name} ({from_tag}) إلى {to_name} ({to_tag})"
+
+msgid "From {from_name} ({from_tag})"
+msgstr "من {from_name} ({from_tag})"
+
+msgid "External"
+msgstr "خارجي"
+
+msgid "Unknown"
+msgstr "غير معروف"

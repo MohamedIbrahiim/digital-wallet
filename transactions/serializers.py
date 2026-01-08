@@ -1,13 +1,23 @@
 from decimal import Decimal
-
+from django.utils.text import format_lazy
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
-from transactions.choices import TransactionType, TransactionStatus
+from transactions.choices import (
+    TransactionType,
+    TransactionDirectionChoices,
+)
 from transactions.models import Transaction
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    from_wallet_tag = serializers.CharField(
+        source="from_wallet.reference_tag", read_only=True
+    )
+    to_wallet_tag = serializers.CharField(
+        source="to_wallet.reference_tag", read_only=True
+    )
+
     class Meta:
         model = Transaction
         fields = (
@@ -16,7 +26,9 @@ class TransactionSerializer(serializers.ModelSerializer):
             "status",
             "amount",
             "from_wallet",
+            "from_wallet_tag",
             "to_wallet",
+            "to_wallet_tag",
             "external_source",
             "metadata",
             "is_hold",
@@ -64,6 +76,7 @@ class BaseWalletTransferSerializer(serializers.Serializer):
 
 class TransactionHistorySerializer(serializers.ModelSerializer):
     direction = serializers.SerializerMethodField()
+    direction_label = serializers.SerializerMethodField()
     source = serializers.SerializerMethodField()
     from_wallet_tag = serializers.CharField(
         source="from_wallet.reference_tag", read_only=True
@@ -87,6 +100,7 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
             "resolved_at",
             "created_at",
             "direction",
+            "direction_label",
             "source",
         )
 
@@ -126,18 +140,35 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
         - for transfers: wallet name and direction
         """
         if obj.tx_type == TransactionType.DEPOSIT:
-            return obj.external_source or "external"
+            return obj.external_source or _("External")
 
-        # for transfers, show wallet tags (or you can enrich later)
         if obj.from_wallet and obj.to_wallet:
-            return (
-                f"wallet:{obj.from_wallet.reference_tag}→{obj.to_wallet.reference_tag}"
+            return format_lazy(
+                _("Transfer from {from_name} ({from_tag}) to {to_name} ({to_tag})"),
+                from_name=obj.from_wallet.name,
+                from_tag=obj.from_wallet.reference_tag,
+                to_name=obj.to_wallet.name,
+                to_tag=obj.to_wallet.reference_tag,
             )
 
         if obj.from_wallet:
-            return f"wallet:{obj.from_wallet.reference_tag}"
+            return format_lazy(
+                _("From {from_name} ({from_tag})"),
+                from_name=obj.from_wallet.name,
+                from_tag=obj.from_wallet.reference_tag,
+            )
 
-        return "unknown"
+        return str(_("Unknown"))
+
+    def get_direction_label(self, obj: Transaction) -> str:
+        direction = self.get_direction(obj)
+        labels = {
+            str(TransactionDirectionChoices.DEPOSIT): _("Deposit"),
+            str(TransactionDirectionChoices.INCOMING): _("Incoming"),
+            str(TransactionDirectionChoices.OUTGOING): _("Outgoing"),
+            str(TransactionDirectionChoices.INTERNAL): _("Internal"),
+        }
+        return labels.get(direction, str(_("Unknown")))
 
 
 class TransactionActionSerializer(serializers.Serializer):

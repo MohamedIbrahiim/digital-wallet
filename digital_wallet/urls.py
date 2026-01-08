@@ -19,6 +19,18 @@ from django.contrib import admin
 from django.urls import path, include
 from shared.auth.apis import LoginView
 from users.apis import RegisterView, ChangePasscodeView
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
+
+swagger_urls = [
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"
+    ),
+]
 
 auth_urls = [
     path("api/v1/auth/login/", LoginView.as_view(), name="login"),
@@ -36,4 +48,4 @@ urlpatterns = [
     path("api/v1/", include("transactions.urls")),
 ]
 
-urlpatterns += auth_urls
+urlpatterns += auth_urls + swagger_urls

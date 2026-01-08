@@ -26,9 +26,10 @@ logger = logging.getLogger(__name__)
 
 class WalletDepositView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = DepositSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = DepositSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         wallet = (
@@ -64,9 +65,10 @@ class WalletDepositView(generics.CreateAPIView):
 
 class InternalTransferView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = BaseWalletTransferSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = BaseWalletTransferSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         logger.info(
@@ -92,9 +94,10 @@ class InternalTransferView(generics.CreateAPIView):
 
 class P2PSendHoldView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = BaseWalletTransferSerializer
 
     def create(self, request, *args, **kwargs):
-        serializer = BaseWalletTransferSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         logger.info(
@@ -125,7 +128,11 @@ class WalletTransactionHistoryView(generics.ListAPIView):
     filterset_class = TransactionFilter
 
     def get_queryset(self):
-        reference_tag = self.kwargs["reference_tag"]
+        if getattr(self, "swagger_fake_view", False):
+            return Transaction.objects.none()
+        reference_tag = self.kwargs.get("reference_tag")
+        if not reference_tag:
+            return Transaction.objects.none()
 
         wallet = Wallet.objects.filter(
             reference_tag=reference_tag, user=self.request.user
@@ -158,7 +165,11 @@ class UserTransactionHistoryView(generics.ListAPIView):
     filterset_class = TransactionFilter
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Transaction.objects.none()
         user = self.request.user
+        if not user or not user.is_authenticated:
+            return Transaction.objects.none()
 
         qs = (
             Transaction.objects.filter(

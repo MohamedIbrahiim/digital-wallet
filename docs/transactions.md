@@ -24,7 +24,7 @@ Response:
 ## Internal transfer
 
 - Method: `POST`
-- Path: `/api/v1/wallets/transfer/`
+- Path: `/api/v1/transactions/transfer/`
 - Auth: `Bearer <access>`
 
 Request body (JSON):
@@ -44,7 +44,7 @@ Response:
 ## P2P send (hold)
 
 - Method: `POST`
-- Path: `/api/v1/wallets/send/`
+- Path: `/api/v1/transactions/send/`
 - Auth: `Bearer <access>`
 
 Request body (JSON):

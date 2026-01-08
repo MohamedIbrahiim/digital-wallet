@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${DB_NAME:-digital_wallet}
+      POSTGRES_USER: ${DB_USER:-digital_wallet}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-digital_wallet}
+    ports:
+      - "${DB_HOST_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    env_file:
+      - .env
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-digital_wallet}
+      DB_USER: ${DB_USER:-digital_wallet}
+      DB_PASSWORD: ${DB_PASSWORD:-digital_wallet}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-change-me}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  pgdata:

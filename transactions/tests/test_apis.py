@@ -1,10 +1,17 @@
 from decimal import Decimal
 
 from django.test import TestCase
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from shared.tests.factories import create_user, create_wallet
-from transactions.apis import WalletDepositView, InternalTransferView, P2PSendHoldView
+from transactions.apis import (
+    WalletDepositView,
+    InternalTransferView,
+    P2PSendHoldView,
+    WalletTransactionHistoryView,
+    UserTransactionHistoryView,
+)
 
 
 class TransactionApiTests(TestCase):
@@ -50,7 +57,7 @@ class TransactionApiTests(TestCase):
             "to_reference_tag": self.second_wallet.reference_tag,
             "amount": "5.00",
         }
-        request = self.factory.post("/wallets/transfer/", payload, format="json")
+        request = self.factory.post("/transactions/transfer/", payload, format="json")
         force_authenticate(request, user=self.user)
 
         response = InternalTransferView.as_view()(request)
@@ -63,7 +70,7 @@ class TransactionApiTests(TestCase):
             "to_reference_tag": self.wallet.reference_tag,
             "amount": "500.00",
         }
-        request = self.factory.post("/wallets/transfer/", payload, format="json")
+        request = self.factory.post("/transactions/transfer/", payload, format="json")
         force_authenticate(request, user=self.user)
 
         response = InternalTransferView.as_view()(request)
@@ -76,9 +83,51 @@ class TransactionApiTests(TestCase):
             "to_reference_tag": self.other_wallet.reference_tag,
             "amount": "7.00",
         }
-        request = self.factory.post("/wallets/send/", payload, format="json")
+        request = self.factory.post("/transactions/send/", payload, format="json")
         force_authenticate(request, user=self.user)
 
         response = P2PSendHoldView.as_view()(request)
 
         self.assertEqual(response.status_code, 201)
+
+    def test_wallet_history_swagger_fake_view_returns_empty(self):
+        request = self.factory.get(
+            f"/wallets/{self.wallet.reference_tag}/transactions/"
+        )
+        request.user = self.user
+        view = WalletTransactionHistoryView()
+        view.request = request
+        view.kwargs = {"reference_tag": self.wallet.reference_tag}
+        view.swagger_fake_view = True
+
+        queryset = view.get_queryset()
+        self.assertEqual(queryset.count(), 0)
+
+    def test_wallet_history_missing_reference_tag_returns_empty(self):
+        request = self.factory.get("/wallets/transactions/")
+        request.user = self.user
+        view = WalletTransactionHistoryView()
+        view.request = request
+        view.kwargs = {}
+
+        queryset = view.get_queryset()
+        self.assertEqual(queryset.count(), 0)
+
+    def test_user_history_anonymous_returns_empty(self):
+        request = self.factory.get("/transactions/")
+        request.user = AnonymousUser()
+        view = UserTransactionHistoryView()
+        view.request = request
+
+        queryset = view.get_queryset()
+        self.assertEqual(queryset.count(), 0)
+
+    def test_user_history_swagger_fake_view_returns_empty(self):
+        request = self.factory.get("/transactions/")
+        request.user = self.user
+        view = UserTransactionHistoryView()
+        view.request = request
+        view.swagger_fake_view = True
+
+        queryset = view.get_queryset()
+        self.assertEqual(queryset.count(), 0)

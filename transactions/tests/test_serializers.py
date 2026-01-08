@@ -1,7 +1,11 @@
 from django.test import SimpleTestCase
 from rest_framework import serializers
 
-from transactions.serializers import DepositSerializer, BaseWalletTransferSerializer
+from transactions.serializers import (
+    DepositSerializer,
+    BaseWalletTransferSerializer,
+    TransactionActionSerializer,
+)
 
 
 class TransactionSerializerTests(SimpleTestCase):
@@ -9,6 +13,10 @@ class TransactionSerializerTests(SimpleTestCase):
         serializer = DepositSerializer(data={"amount": "0.00"})
         self.assertFalse(serializer.is_valid())
         self.assertIn("amount", serializer.errors)
+
+    def test_deposit_accepts_positive_amount(self):
+        serializer = DepositSerializer(data={"amount": "1.00"})
+        self.assertTrue(serializer.is_valid(), serializer.errors)
 
     def test_transfer_requires_source_tag(self):
         serializer = BaseWalletTransferSerializer(
@@ -43,6 +51,17 @@ class TransactionSerializerTests(SimpleTestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("to_reference_tag", serializer.errors)
 
+    def test_transfer_accepts_valid_payload(self):
+        serializer = BaseWalletTransferSerializer(
+            data={
+                "from_reference_tag": "@wlt_aaaa.1",
+                "to_reference_tag": "@wlt_bbbb.2",
+                "amount": "1.00",
+                "metadata": {"note": "ok"},
+            }
+        )
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
     def test_validate_requires_source_tag(self):
         serializer = BaseWalletTransferSerializer()
         with self.assertRaises(serializers.ValidationError):
@@ -64,3 +83,7 @@ class TransactionSerializerTests(SimpleTestCase):
                     "amount": "1.00",
                 }
             )
+
+    def test_action_serializer_accepts_boolean(self):
+        serializer = TransactionActionSerializer(data={"is_accepted": True})
+        self.assertTrue(serializer.is_valid())

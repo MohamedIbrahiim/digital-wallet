@@ -16,11 +16,15 @@ urlpatterns = [
         name="wallet-deposit",
     ),
     path(
-        "wallets/transfer/",
+        "transactions/transfer/",
         InternalTransferView.as_view(),
         name="wallet-internal-transfer",
     ),
-    path("wallets/send/", P2PSendHoldView.as_view(), name="wallet-p2p-send-hold"),
+    path(
+        "transactions/send/",
+        P2PSendHoldView.as_view(),
+        name="wallet-p2p-send-hold",
+    ),
     path(
         "wallets/<str:reference_tag>/transactions/",
         WalletTransactionHistoryView.as_view(),

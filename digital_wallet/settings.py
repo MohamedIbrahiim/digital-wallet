@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from decimal import Decimal
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +24,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3pn^9m2v&&nmzk5uf_hc4g__dy5gy5=jsxojm-xdma$2qszcmd"
+SECRET_KEY = config(
+    "DJANGO_SECRET_KEY",
+    default="django-insecure-3pn^9m2v&&nmzk5uf_hc4g__dy5gy5=jsxojm-xdma$2qszcmd",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = (
+    config("DJANGO_ALLOWED_HOSTS", default="", cast=str).split(",")
+    if config("DJANGO_ALLOWED_HOSTS", default="", cast=str)
+    else []
+)
 
 
 # Application definition
@@ -44,6 +53,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "phonenumber_field",
     "django_filters",
+    "drf_spectacular",
     # local apps
     "users",
     "transactions",
@@ -85,12 +95,29 @@ WSGI_APPLICATION = "digital_wallet.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+
+def _database_from_env():
+    if config("DB_HOST", default="", cast=str):
+        return {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": config("DB_NAME", default="digital_wallet"),
+                "USER": config("DB_USER", default="digital_wallet"),
+                "PASSWORD": config("DB_PASSWORD", default="digital_wallet"),
+                "HOST": config("DB_HOST", default="localhost"),
+                "PORT": config("DB_PORT", default="5432"),
+            }
+        }
+
+    return {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+
+
+DATABASES = _database_from_env()
 
 
 # Password validation
@@ -156,6 +183,26 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "user": "30/min",
     },
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "shared.exceptions.api_exception_handler",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Digital Wallet API",
+    "DESCRIPTION": (
+        "API for user registration, wallet creation, deposits, internal transfers, "
+        "and P2P flows. Uses short-lived JWT access tokens with rolling access "
+        "rotation via the X-Access-Token response header. Wallets are referenced "
+        "by public reference_tag values (e.g., @wlt_x7k9f.1) instead of internal IDs."
+    ),
+    "VERSION": "1.0.0",
+    "SECURITY": [{"VersionedJWTAuthentication": []}],
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "AUTHENTICATION_EXTENSIONS": [
+        "shared.auth.spectacular.VersionedJWTAuthenticationExtension",
+    ],
 }
 
 # I added this for wallet security as tif token not used for more than 2 min it automatically expires
@@ -227,14 +274,13 @@ WALLET_LIMITS = {
     # Optional per type overrides
     "P2P": {
         "MAX_PER_TRANSACTION": Decimal("2000.00"),
-        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("5000.00"),
+        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("20000.00"),
     },
     "INTERNAL": {
         "MAX_PER_TRANSACTION": Decimal("10000.00"),
-        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("50000.00"),
+        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("20000.00"),
     },
     "DEPOSIT": {
-        "MAX_PER_TRANSACTION": Decimal("50000.00"),
-        # deposits usually don’t count in outgoing limit
+        "MAX_PER_TRANSACTION": Decimal("20000.00"),
     },
 }

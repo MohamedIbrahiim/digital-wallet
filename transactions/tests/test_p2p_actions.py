@@ -101,15 +101,12 @@ class TransactionActionTests(TestCase):
             status=TransactionStatus.PENDING,
             is_hold=True,
             to_wallet_id=None,
-            to_wallet=SimpleNamespace(user_id=self.recipient.id),
         )
 
         with mock.patch(
             "transactions.services.Transaction.objects.select_for_update"
         ) as mocked_select:
-            mocked_select.return_value.select_related.return_value.get.return_value = (
-                fake_tx
-            )
+            mocked_select.return_value.get.return_value = fake_tx
             with self.assertRaises(ValidationError):
                 MoneyFlowService.p2p_accept(
                     user=self.recipient, tx_id="tx_missing_wallet"
@@ -135,9 +132,7 @@ class TransactionActionTests(TestCase):
         ) as mocked_tx_select, mock.patch(
             "transactions.services.Wallet.objects.select_for_update"
         ) as mocked_wallet_select:
-            mocked_tx_select.return_value.select_related.return_value.get.return_value = (
-                fake_tx
-            )
+            mocked_tx_select.return_value.get.return_value = fake_tx
             mocked_wallet_select.return_value.filter.return_value = [
                 from_wallet,
                 to_wallet,
@@ -167,9 +162,7 @@ class TransactionActionTests(TestCase):
         ) as mocked_tx_select, mock.patch(
             "transactions.services.Wallet.objects.select_for_update"
         ) as mocked_wallet_select:
-            mocked_tx_select.return_value.select_related.return_value.get.return_value = (
-                fake_tx
-            )
+            mocked_tx_select.return_value.get.return_value = fake_tx
             mocked_wallet_select.return_value.filter.return_value = [
                 from_wallet,
                 to_wallet,
@@ -189,3 +182,19 @@ class TransactionActionTests(TestCase):
 
         with self.assertRaises(ValidationError):
             MoneyFlowService.p2p_accept(user=self.recipient, tx_id=self.tx.id)
+
+    def test_accept_reject_inactive_sender_wallet(self):
+        self.sender_wallet.status = WalletStatus.SUSPENDED
+        self.sender_wallet.save(update_fields=["status"])
+
+        with self.assertRaises(ValidationError):
+            MoneyFlowService.p2p_accept(user=self.recipient, tx_id=self.tx.id)
+
+    def test_accept_reject_insufficient_held_balance_real(self):
+        self.sender_wallet.held_balance = Decimal("0.00")
+        self.sender_wallet.save(update_fields=["held_balance"])
+
+        with self.assertRaises(ValidationError):
+            MoneyFlowService.p2p_accept(user=self.recipient, tx_id=self.tx.id)
+        with self.assertRaises(ValidationError):
+            MoneyFlowService.p2p_reject(user=self.recipient, tx_id=self.tx.id)
