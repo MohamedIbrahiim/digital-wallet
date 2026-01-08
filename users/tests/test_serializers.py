@@ -1,10 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 
 from users.serializers import ChangePasscodeSerializer, RegisterSerializer
-
-User = get_user_model()
+from shared.tests.factories import create_user
 
 
 class RegisterSerializerTests(TestCase):
@@ -41,9 +39,7 @@ class RegisterSerializerTests(TestCase):
 
 class ChangePasscodeSerializerTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            mobile_number="+201234567891", password="123456"
-        )
+        self.user = create_user()
         self.factory = APIRequestFactory()
 
     def _request(self):

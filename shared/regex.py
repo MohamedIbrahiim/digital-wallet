@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 
 
 class PasscodeField(serializers.RegexField):
@@ -6,6 +7,6 @@ class PasscodeField(serializers.RegexField):
         super().__init__(
             regex=r"^\d{6}$",
             write_only=True,
-            error_messages={"invalid": "Passcode must be exactly 6 digits."},
+            error_messages={"invalid": _("Passcode must be exactly 6 digits.")},
             **kwargs,
         )

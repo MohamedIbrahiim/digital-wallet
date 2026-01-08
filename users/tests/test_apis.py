@@ -3,6 +3,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from users.apis import ChangePasscodeView, RegisterView
+from shared.tests.factories import create_user
 
 User = get_user_model()
 
@@ -31,9 +32,7 @@ class RegisterViewTests(TestCase):
 
 class ChangePasscodeViewTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            mobile_number="+201234567801", password="123456"
-        )
+        self.user = create_user()
         self.factory = APIRequestFactory()
 
     def test_change_passcode_view_returns_success(self):

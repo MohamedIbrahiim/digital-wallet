@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, default="")
     preferred_language = models.CharField(
         max_length=5,
-        choices=[("en", "English"), ("ar", "Arabic")],
+        choices=[("en", _("English")), ("ar", _("Arabic"))],
         default="en",
     )
     token_version = models.PositiveIntegerField(default=1)

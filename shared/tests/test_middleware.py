@@ -1,7 +1,6 @@
 import time
 from unittest import mock
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.test import TestCase
@@ -9,8 +8,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 
 from shared.middlewares import SlidingAccessTokenMiddleware
-
-User = get_user_model()
+from shared.tests.factories import create_user
 
 
 def _get_response(_request):
@@ -19,9 +17,7 @@ def _get_response(_request):
 
 class SlidingAccessTokenMiddlewareTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            mobile_number="+201234567806", password="123456"
-        )
+        self.user = create_user()
 
     def test_mints_token_when_near_expiry(self):
         token = AccessToken.for_user(self.user)

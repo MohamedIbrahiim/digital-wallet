@@ -2,6 +2,7 @@ import logging
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ class VersionedJWTAuthentication(JWTAuthentication):
             logger.warning(
                 "token_missing_version user_id=%s", getattr(user, "pk", None)
             )
-            raise AuthenticationFailed("Invalid token (missing version).")
+            raise AuthenticationFailed(_("Invalid token (missing version)."))
 
         if int(token_tv) != int(getattr(user, "token_version", 1)):
             logger.warning(
@@ -29,6 +30,8 @@ class VersionedJWTAuthentication(JWTAuthentication):
                 token_tv,
                 getattr(user, "token_version", None),
             )
-            raise AuthenticationFailed("Token is no longer valid. Please log in again.")
+            raise AuthenticationFailed(
+                _("Token is no longer valid. Please log in again.")
+            )
 
         return user
