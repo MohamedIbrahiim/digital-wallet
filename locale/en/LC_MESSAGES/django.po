@@ -60,6 +60,11 @@ msgstr "Wallet type"
 msgid "Wallet name"
 msgstr "Wallet name"
 
+msgid "Wallet reference tag"
+msgstr "Wallet reference tag"
+
+msgid "Public wallet reference tag for transfers (e.g., @wlt_x7k9f.42)."
+msgstr "Public wallet reference tag for transfers (e.g., @wlt_x7k9f.42)."
 msgid "Unique wallet name per user (e.g., My Savings, Travel Fund)."
 msgstr "Unique wallet name per user (e.g., My Savings, Travel Fund)."
 
@@ -80,3 +85,139 @@ msgstr "You do not have permission to access this wallet."
 
 msgid "You already have a wallet with this name."
 msgstr "You already have a wallet with this name."
+
+msgid "Deposit"
+msgstr "Deposit"
+
+msgid "Internal transfer"
+msgstr "Internal transfer"
+
+msgid "Incoming"
+msgstr "Incoming"
+
+msgid "Outgoing"
+msgstr "Outgoing"
+
+msgid "Internal"
+msgstr "Internal"
+
+msgid "Peer to peer"
+msgstr "Peer to peer"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Rejected"
+msgstr "Rejected"
+
+msgid "Canceled"
+msgstr "Canceled"
+
+msgid "Amount must be greater than zero."
+msgstr "Amount must be greater than zero."
+
+msgid "Destination wallet must be different."
+msgstr "Destination wallet must be different."
+
+msgid "Source reference tag is required."
+msgstr "Source reference tag is required."
+
+msgid "Destination reference tag is required."
+msgstr "Destination reference tag is required."
+
+msgid "Destination reference tag must be different."
+msgstr "Destination reference tag must be different."
+
+msgid "Wallet not found."
+msgstr "Wallet not found."
+
+msgid "Only P2P transactions can be accepted or rejected."
+msgstr "Only P2P transactions can be accepted or rejected."
+
+msgid "Transaction is not pending."
+msgstr "Transaction is not pending."
+
+msgid "Transaction has no destination wallet."
+msgstr "Transaction has no destination wallet."
+
+msgid "You do not have permission to accept this transaction."
+msgstr "You do not have permission to accept this transaction."
+
+msgid "You do not have permission to reject this transaction."
+msgstr "You do not have permission to reject this transaction."
+
+msgid "Sender wallet is not active."
+msgstr "Sender wallet is not active."
+
+msgid "Recipient wallet is not active."
+msgstr "Recipient wallet is not active."
+
+msgid "Insufficient held balance to complete transaction."
+msgstr "Insufficient held balance to complete transaction."
+
+msgid "Insufficient held balance to release transaction."
+msgstr "Insufficient held balance to release transaction."
+
+msgid "Transaction type"
+msgstr "Transaction type"
+
+msgid "Amount"
+msgstr "Amount"
+
+msgid "From wallet"
+msgstr "From wallet"
+
+msgid "To wallet"
+msgstr "To wallet"
+
+msgid "External source"
+msgstr "External source"
+
+msgid "Used for deposits (e.g., bank, card, cash, promo)."
+msgstr "Used for deposits (e.g., bank, card, cash, promo)."
+
+
+msgid "Metadata"
+msgstr "Metadata"
+
+msgid "Extra transaction details (optional)."
+msgstr "Extra transaction details (optional)."
+
+msgid "Is hold"
+msgstr "Is hold"
+
+msgid "True if amount is reserved until approval (P2P pending)."
+msgstr "True if amount is reserved until approval (P2P pending)."
+
+msgid "Held at"
+msgstr "Held at"
+
+msgid "Resolved at"
+msgstr "Resolved at"
+
+msgid "When transaction moved from pending to completed/rejected."
+msgstr "When transaction moved from pending to completed/rejected."
+
+msgid "Transaction"
+msgstr "Transaction"
+
+msgid "Transactions"
+msgstr "Transactions"
+
+msgid "Wallet is not active."
+msgstr "Wallet is not active."
+
+msgid "One or more wallets do not exist."
+msgstr "One or more wallets do not exist."
+
+msgid "You can only transfer between your own wallets."
+msgstr "You can only transfer between your own wallets."
+
+msgid "Insufficient funds."
+msgstr "Insufficient funds."
+
+msgid "You do not have permission to use this wallet."
+msgstr "You do not have permission to use this wallet."

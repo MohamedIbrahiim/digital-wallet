@@ -60,6 +60,11 @@ msgstr "نوع المحفظة"
 msgid "Wallet name"
 msgstr "اسم المحفظة"
 
+msgid "Wallet reference tag"
+msgstr "معرف مرجعي للمحفظة"
+
+msgid "Public wallet reference tag for transfers (e.g., @wlt_x7k9f.42)."
+msgstr "معرف مرجعي عام للمحفظة للتحويلات (مثل: @wlt_x7k9f.42)."
 msgid "Unique wallet name per user (e.g., My Savings, Travel Fund)."
 msgstr "اسم فريد للمحفظة لكل مستخدم (مثل: مدخراتي، صندوق السفر)."
 
@@ -80,3 +85,139 @@ msgstr "ليس لديك صلاحية للوصول إلى هذه المحفظة."
 
 msgid "You already have a wallet with this name."
 msgstr "لديك محفظة بهذا الاسم بالفعل."
+
+msgid "Deposit"
+msgstr "إيداع"
+
+msgid "Internal transfer"
+msgstr "تحويل داخلي"
+
+msgid "Incoming"
+msgstr "وارد"
+
+msgid "Outgoing"
+msgstr "صادر"
+
+msgid "Internal"
+msgstr "داخلي"
+
+msgid "Peer to peer"
+msgstr "تحويل بين الأفراد"
+
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+msgid "Completed"
+msgstr "مكتمل"
+
+msgid "Rejected"
+msgstr "مرفوض"
+
+msgid "Canceled"
+msgstr "ملغي"
+
+msgid "Amount must be greater than zero."
+msgstr "يجب أن يكون المبلغ أكبر من صفر."
+
+msgid "Destination wallet must be different."
+msgstr "يجب أن تكون محفظة الوجهة مختلفة."
+
+msgid "Source reference tag is required."
+msgstr "معرف المصدر المرجعي مطلوب."
+
+msgid "Destination reference tag is required."
+msgstr "معرف الوجهة المرجعي مطلوب."
+
+msgid "Destination reference tag must be different."
+msgstr "يجب أن يكون معرف الوجهة المرجعي مختلفاً."
+
+msgid "Wallet not found."
+msgstr "المحفظة غير موجودة."
+
+msgid "Only P2P transactions can be accepted or rejected."
+msgstr "يمكن قبول أو رفض معاملات التحويل بين الأفراد فقط."
+
+msgid "Transaction is not pending."
+msgstr "المعاملة ليست قيد الانتظار."
+
+msgid "Transaction has no destination wallet."
+msgstr "لا يوجد للمُعاملة محفظة وجهة."
+
+msgid "You do not have permission to accept this transaction."
+msgstr "ليس لديك صلاحية لقبول هذه المعاملة."
+
+msgid "You do not have permission to reject this transaction."
+msgstr "ليس لديك صلاحية لرفض هذه المعاملة."
+
+msgid "Sender wallet is not active."
+msgstr "محفظة المرسل غير نشطة."
+
+msgid "Recipient wallet is not active."
+msgstr "محفظة المستلم غير نشطة."
+
+msgid "Insufficient held balance to complete transaction."
+msgstr "الرصيد المحجوز غير كافٍ لإتمام المعاملة."
+
+msgid "Insufficient held balance to release transaction."
+msgstr "الرصيد المحجوز غير كافٍ لفك الحجز."
+
+msgid "Transaction type"
+msgstr "نوع المعاملة"
+
+msgid "Amount"
+msgstr "المبلغ"
+
+msgid "From wallet"
+msgstr "من محفظة"
+
+msgid "To wallet"
+msgstr "إلى محفظة"
+
+msgid "External source"
+msgstr "مصدر خارجي"
+
+msgid "Used for deposits (e.g., bank, card, cash, promo)."
+msgstr "يستخدم للإيداعات (مثل: بنك، بطاقة، نقداً، ترويج)."
+
+
+msgid "Metadata"
+msgstr "بيانات وصفية"
+
+msgid "Extra transaction details (optional)."
+msgstr "تفاصيل إضافية للمعاملة (اختياري)."
+
+msgid "Is hold"
+msgstr "محجوز"
+
+msgid "True if amount is reserved until approval (P2P pending)."
+msgstr "صحيح إذا تم حجز المبلغ حتى الموافقة (تحويل بين الأفراد قيد الانتظار)."
+
+msgid "Held at"
+msgstr "وقت الحجز"
+
+msgid "Resolved at"
+msgstr "وقت الحسم"
+
+msgid "When transaction moved from pending to completed/rejected."
+msgstr "عند انتقال المعاملة من قيد الانتظار إلى مكتملة/مرفوضة."
+
+msgid "Transaction"
+msgstr "معاملة"
+
+msgid "Transactions"
+msgstr "معاملات"
+
+msgid "Wallet is not active."
+msgstr "المحفظة غير نشطة."
+
+msgid "One or more wallets do not exist."
+msgstr "محفظة واحدة أو أكثر غير موجودة."
+
+msgid "You can only transfer between your own wallets."
+msgstr "يمكنك التحويل بين محافظك فقط."
+
+msgid "Insufficient funds."
+msgstr "رصيد غير كافٍ."
+
+msgid "You do not have permission to use this wallet."
+msgstr "ليس لديك صلاحية لاستخدام هذه المحفظة."

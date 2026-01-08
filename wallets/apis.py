@@ -18,6 +18,8 @@ class WalletViewSet(
 ):
     permission_classes = [IsAuthenticated, IsWalletOwner]
     serializer_class = WalletSerializer
+    lookup_field = "reference_tag"
+    lookup_url_kwarg = "reference_tag"
 
     def get_queryset(self):
         queryset = Wallet.objects.filter(user=self.request.user).order_by("-created_at")
@@ -35,8 +37,8 @@ class WalletViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         logger.info(
-            "wallet_retrieve_requested user_id=%s wallet_id=%s",
+            "wallet_retrieve_requested user_id=%s reference_tag=%s",
             request.user.pk,
-            kwargs.get("pk"),
+            kwargs.get("reference_tag"),
         )
         return super().retrieve(request, *args, **kwargs)

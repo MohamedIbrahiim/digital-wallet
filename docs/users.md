@@ -78,3 +78,8 @@ Status: `200 OK`
 Clients should:
 - Attach `Authorization: Bearer <access>` on every request.
 - Watch for `X-Access-Token` and replace the stored token when it appears.
+
+## Wallet reference tags
+
+Transfers use wallet `reference_tag` values rather than internal IDs.
+The tag is returned in wallet APIs and looks like `@wlt_x7k9f.1`.

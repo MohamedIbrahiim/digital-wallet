@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from decimal import Decimal
 from pathlib import Path
 from datetime import timedelta
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "phonenumber_field",
+    "django_filters",
     # local apps
     "users",
     "transactions",
@@ -146,6 +148,14 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "shared.auth.authentication.VersionedJWTAuthentication",
     ),
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_THROTTLE_RATES": {
+        "user": "30/min",
+    },
 }
 
 # I added this for wallet security as tif token not used for more than 2 min it automatically expires
@@ -205,5 +215,26 @@ LOGGING = {
             "level": "INFO",
             "propagate": False,
         },
+    },
+}
+
+
+WALLET_LIMITS = {
+    "DEFAULT": {
+        "MAX_PER_TRANSACTION": Decimal("5000.00"),
+        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("20000.00"),
+    },
+    # Optional per type overrides
+    "P2P": {
+        "MAX_PER_TRANSACTION": Decimal("2000.00"),
+        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("5000.00"),
+    },
+    "INTERNAL": {
+        "MAX_PER_TRANSACTION": Decimal("10000.00"),
+        "DAILY_WALLET_OUTGOING_LIMIT": Decimal("50000.00"),
+    },
+    "DEPOSIT": {
+        "MAX_PER_TRANSACTION": Decimal("50000.00"),
+        # deposits usually don’t count in outgoing limit
     },
 }

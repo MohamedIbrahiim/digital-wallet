@@ -1,7 +1,7 @@
 """
-URL configuration for digital_wallet project.
+URL configuration for a digital_wallet project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
+The `urlpatterns` list routes URLs to views. For more information, please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
 Examples:
 Function views
@@ -33,6 +33,7 @@ auth_urls = [
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("wallets.urls")),
+    path("api/v1/", include("transactions.urls")),
 ]
 
 urlpatterns += auth_urls

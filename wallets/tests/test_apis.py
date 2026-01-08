@@ -35,11 +35,11 @@ class WalletViewSetTests(TestCase):
 
     def test_retrieve_wallet(self):
         wallet = create_wallet(user=self.user)
-        request = self.factory.get(f"/wallets/{wallet.pk}/")
+        request = self.factory.get(f"/wallets/{wallet.reference_tag}/")
         force_authenticate(request, user=self.user)
 
         view = WalletViewSet.as_view({"get": "retrieve"})
-        response = view(request, pk=wallet.pk)
+        response = view(request, reference_tag=wallet.reference_tag)
 
         self.assertEqual(response.status_code, 200)
 
